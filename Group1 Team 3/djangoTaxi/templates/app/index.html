@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxi Fare Prediction | Quick and Accurate</title>
+    <meta name="description"
+        content="Predict taxi fares quickly and accurately with our intuitive and user-friendly form.">
+    <meta name="keywords" content="Taxi Fare Prediction, Taxi App, Fare Estimation, Taxi Service">
+    <meta name="author" content="Your Name">
+    <style>
+        /* General styling for the body */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            /* Changed to column layout */
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="datetime-local"],
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+            color: #555;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="datetime-local"]:focus,
+        select:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Styling for the result display */
+        footer {
+            margin-top: auto;
+            /* Push footer to the bottom */
+            padding: 20px;
+            background-color: #45a049;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 510px;
+            text-align: center;
+            margin-left: 80px;
+        }
+
+        #result {
+            font-size: 20px;
+            color: #333;
+            margin:20px;
+        }
+
+        .prediction-success {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .prediction-error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        /* Additional styling for layout */
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            /* Adds space between rows */
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <form id="prediction-form">
+            <h1>Taxi Fare Prediction</h1>
+
+            <div class="form-group">
+                <label for="user_id">User ID:</label>
+                <input type="text" id="user_id" name="user_id" value="DefaultUserID" placeholder="Enter your User ID"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="user_name">User Name:</label>
+                <input type="text" id="user_name" name="user_name" value="DefaultUserName" placeholder="Enter your Name"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="driver_name">Driver Name:</label>
+                <input type="text" id="driver_name" name="driver_name" value="DefaultDriverName"
+                    placeholder="Enter the Driver's Name" required>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label for="weekday">Weekday:</label>
+                    <input type="number" id="weekday" name="weekday" min="1" max="7" value="3" required>
+                </div>
+                <div>
+                    <label for="car_condition">Car Condition (1-4):</label>
+                    <input type="number" id="car_condition" name="car_condition" value="4" min="1" max="4" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="weather">Weather:</label>
+                <select id="weather" name="weather" required>
+                    <option value="cloudy" selected>Cloudy</option>
+                    <option value="stormy">Stormy</option>
+                    <option value="sunny">Sunny</option>
+                    <option value="windy">Windy</option>
+                    <option value="rainy">Rainy</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="traffic_condition">Traffic Condition:</label>
+                <select id="traffic_condition" name="traffic_condition" required>
+                    <option value="Dense Traffic" selected>Dense Traffic</option>
+                    <option value="Flow Traffic">Flow Traffic</option>
+                    <option value="Congested Traffic">Congested Traffic</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="pickup_datetime">Pickup Datetime:</label>
+                <input type="datetime-local" id="pickup_datetime" name="pickup_datetime" required>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label for="passenger_count">Passenger Count:</label>
+                    <input type="number" id="passenger_count" name="passenger_count" min="1" max="12" value="1"
+                        required>
+                </div>
+                <div>
+                    <label for="hour">Hour:</label>
+                    <input type="number" id="hour" name="hour" value="10" min="0" max="23" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label for="day">Day:</label>
+                    <input type="number" id="day" name="day" value="3" min="1" max="31" required>
+                </div>
+                <div>
+                    <label for="month">Month:</label>
+                    <input type="number" id="month" name="month" value="6" min="1" max="12" required>
+                </div>
+                <div>
+                    <label for="year">Year:</label>
+                    <input type="number" id="year" name="year" value="2010" min="2009" max="2015" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="jfk_dist">JFK Distance:</label>
+                <input type="number" step="any" id="jfk_dist" name="jfk_dist" value="20.0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="ewr_dist">EWR Distance:</label>
+                <input type="number" step="any" id="ewr_dist" name="ewr_dist" value="30.0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="lga_dist">LGA Distance:</label>
+                <input type="number" step="any" id="lga_dist" name="lga_dist" value="15.0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="sol_dist">SOL Distance:</label>
+                <input type="number" step="any" id="sol_dist" name="sol_dist" value="10.0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nyc_dist">NYC Distance:</label>
+                <input type="number" step="any" id="nyc_dist" name="nyc_dist" value="5.0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="distance">Distance:</label>
+                <input type="number" step="any" id="distance" name="distance" value="2.5" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bearing">Bearing:</label>
+                <input type="number" step="any" id="bearing" name="bearing" value="50" min="-180" max="180" required>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label for="pickup_longitude_degrees">Pickup Longitude Degrees:</label>
+                    <input type="number" step="any" id="pickup_longitude_degrees" name="pickup_longitude_degrees"
+                        value="-73.985" min="-180" max="180" required>
+                </div>
+                <div>
+                    <label for="pickup_latitude_degrees">Pickup Latitude Degrees:</label>
+                    <input type="number" step="any" id="pickup_latitude_degrees" name="pickup_latitude_degrees"
+                        value="40.758" min="-90" max="90" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label for="dropoff_longitude_degrees">Dropoff Longitude Degrees:</label>
+                    <input type="number" step="any" id="dropoff_longitude_degrees" name="dropoff_longitude_degrees"
+                        value="-73.985" min="-180" max="180" required>
+                </div>
+                <div>
+                    <label for="dropoff_latitude_degrees">Dropoff Latitude Degrees:</label>
+                    <input type="number" step="any" id="dropoff_latitude_degrees" name="dropoff_latitude_degrees"
+                        value="40.758" min="-90" max="90" required>
+                </div>
+            </div>
+
+            <input type="submit" value="Predict">
+        </form>
+    </div>
+
+    <footer>
+        <div id="result"></div>
+    </footer>
+
+    <script>
+        document.getElementById('prediction-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const pickup_datetime = formData.get('pickup_datetime');
+
+            const data = {
+                user_id: formData.get('user_id'),
+                user_name: formData.get('user_name'),
+                driver_name: formData.get('driver_name'),
+                car_condition: formData.get('car_condition'),
+                weather: formData.get('weather'),
+                key: pickup_datetime,  // Set key to the same value as pickup_datetime
+                traffic_condition: formData.get('traffic_condition'),
+                pickup_datetime: pickup_datetime,
+                passenger_count: formData.get('passenger_count'),
+                hour: formData.get('hour'),
+                day: formData.get('day'),
+                month: formData.get('month'),
+                weekday: formData.get('weekday'),
+                year: formData.get('year'),
+                jfk_dist: formData.get('jfk_dist'),
+                ewr_dist: formData.get('ewr_dist'),
+                lga_dist: formData.get('lga_dist'),
+                sol_dist: formData.get('sol_dist'),
+                nyc_dist: formData.get('nyc_dist'),
+                distance: formData.get('distance'),
+                bearing: formData.get('bearing'),
+                pickup_longitude_degrees: formData.get('pickup_longitude_degrees'),
+                pickup_latitude_degrees: formData.get('pickup_latitude_degrees'),
+                dropoff_longitude_degrees: formData.get('dropoff_longitude_degrees'),
+                dropoff_latitude_degrees: formData.get('dropoff_latitude_degrees')
+            };
+
+            fetch('/predict/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}' // CSRF token for security, if required
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    // Check if the response is ok and handle JSON
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.style.display = 'block';
+
+                    // Check if the prediction was successful and update the result display
+                    if (data.prediction) {
+                        resultDiv.className = 'prediction-success';
+                        resultDiv.textContent = 'Estimated Fare: $' + data.prediction[0][0].toFixed(2);
+                    } else if (data.error) {
+                        resultDiv.className = 'prediction-error';
+                        resultDiv.textContent = 'Error: ' + data.error;
+                    } else {
+                        resultDiv.className = 'prediction-error';
+                        resultDiv.textContent = 'Prediction: undefined';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.style.display = 'block';
+                    resultDiv.className = 'prediction-error';
+                    resultDiv.textContent = 'An error occurred during prediction: ' + error.message;
+                });
+        });
+    </script>
+</body>
+
+</html>
